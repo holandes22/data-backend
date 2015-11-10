@@ -1,0 +1,4 @@
+git+https://github.com/holandes22/etcdc@v0.1.0
+git+https://github.com/django-json-api/django-rest-framework-json-api
+Django==1.9b1
+djangorestframework==3.3.1
