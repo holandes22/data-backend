@@ -9,10 +9,10 @@ from rest_framework.exceptions import NotFound, ParseError
 from etcdc.client import Client
 from etcdc.errors import NotAFile
 
-# Create your views here.
 
-class ConfigAPIView(APIView):
+class ConfigEntryAPIView(APIView):
 
+    resource_name = 'config-entries'
     etcd_client = None
 
     def get_etcd_client(self):
@@ -42,7 +42,8 @@ class ConfigAPIView(APIView):
         entry['attributes'] = attributes
         return entry
 
-class ConfigEntryList(ConfigAPIView):
+
+class ConfigEntryList(ConfigEntryAPIView):
     categories = ['collector']
 
     def get(self, request, format=None):
@@ -69,7 +70,7 @@ class ConfigEntryList(ConfigAPIView):
         return items
 
 
-class ConfigEntryDetail(ConfigAPIView):
+class ConfigEntryDetail(ConfigEntryAPIView):
 
     def get(self, request, id, format=None):
         client = self.get_etcd_client()
@@ -82,7 +83,7 @@ class ConfigEntryDetail(ConfigAPIView):
         key = os.path.basename(path)
         return Response(self.get_config_entry(path, key, value))
 
-    def post(self, request, id, format=None):
+    def patch(self, request, id, format=None):
         client = self.get_etcd_client()
         path = self.construct_path(id)
         value = request.data['value']
